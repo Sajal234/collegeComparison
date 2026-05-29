@@ -23,6 +23,10 @@ const colleges = [
             placementRate: 92,
             topRecruiters: ["Google", "Microsoft", "Goldman Sachs", "Tata Steel"],
         },
+        cutoffs: [
+            { exam: "JEE Advanced", courseName: "Computer Science and Engineering", openingRank: 1, closingRank: 67, year: 2024, round: "Round 6" },
+            { exam: "JEE Advanced", courseName: "Electrical Engineering", openingRank: 250, closingRank: 496, year: 2024, round: "Round 6" },
+        ],
     },
     {
         name: "Indian Institute of Technology Delhi",
@@ -44,6 +48,10 @@ const colleges = [
             placementRate: 90,
             topRecruiters: ["Amazon", "Microsoft", "Uber", "Qualcomm"],
         },
+        cutoffs: [
+            { exam: "JEE Advanced", courseName: "Computer Science and Engineering", openingRank: 90, closingRank: 116, year: 2024, round: "Round 6" },
+            { exam: "JEE Advanced", courseName: "Mechanical Engineering", openingRank: 1250, closingRank: 1882, year: 2024, round: "Round 6" },
+        ],
     },
     {
         name: "Birla Institute of Technology and Science Pilani",
@@ -65,6 +73,10 @@ const colleges = [
             placementRate: 88,
             topRecruiters: ["Adobe", "Oracle", "Flipkart", "Cisco"],
         },
+        cutoffs: [
+            { exam: "BITSAT", courseName: "Computer Science", openingRank: 1, closingRank: 327, year: 2024, round: "Iteration 7" },
+            { exam: "BITSAT", courseName: "Electronics and Instrumentation", openingRank: 328, closingRank: 1254, year: 2024, round: "Iteration 7" },
+        ],
     },
     {
         name: "Vellore Institute of Technology",
@@ -86,6 +98,10 @@ const colleges = [
             placementRate: 82,
             topRecruiters: ["TCS", "Infosys", "Microsoft", "Deloitte"],
         },
+        cutoffs: [
+            { exam: "VITEEE", courseName: "Computer Science and Engineering", openingRank: 1, closingRank: 8000, year: 2024, round: "Phase 1" },
+            { exam: "VITEEE", courseName: "Information Technology", openingRank: 8001, closingRank: 13000, year: 2024, round: "Phase 1" },
+        ],
     },
 ];
 
@@ -123,6 +139,9 @@ async function main() {
                 },
                 placements: {
                     create: college.placement,
+                },
+                admissionCutoffs: {
+                    create: college.cutoffs,
                 },
             },
         });
