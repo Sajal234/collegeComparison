@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { errorHandler } from "./middleware/error.middleware.js";
+import collegeRouter from "./routes/college.routes.js";
 
 const app = express();
 
@@ -21,6 +22,8 @@ app.get("/health", (_req, res) => {
         message: "College comparison API is running",
     });
 });
+
+app.use("/api/v1/colleges", collegeRouter);
 
 app.use(errorHandler);
 
