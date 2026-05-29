@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
 
@@ -20,5 +21,7 @@ app.get("/health", (_req, res) => {
         message: "College comparison API is running",
     });
 });
+
+app.use(errorHandler);
 
 export default app;
