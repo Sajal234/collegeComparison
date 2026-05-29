@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  name           String
+  email          String          @unique
+  password       String
+  savedColleges  SavedCollege[]
+  comparisons    Comparison[]
+  reviews        Review[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model College {
+  id             String          @id @default(uuid())
+  name           String
+  slug           String          @unique
+  city           String
+  state          String
+  ownership      String
+  ranking        Int?
+  rating         Float?
+  averageFees    Int
+  description    String?
+  courses        Course[]
+  placements     Placement?
+  reviews        Review[]
+  savedBy        SavedCollege[]
+  comparisonItems ComparisonItem[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([city])
+  @@index([state])
+  @@index([ownership])
+  @@index([ranking])
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  collegeId   String
+  name        String
+  degree      String
+  duration    String
+  fees        Int
+  seats       Int?
+  college     College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([collegeId])
+  @@index([degree])
+}
+
+model Placement {
+  id                    String   @id @default(uuid())
+  collegeId             String   @unique
+  averagePackage        Float
+  highestPackage        Float
+  placementRate         Float
+  topRecruiters         String[]
+  college               College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  collegeId   String
+  userId      String
+  rating      Int
+  title       String
+  comment     String
+  college     College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([collegeId])
+  @@index([userId])
+}
+
+model SavedCollege {
+  id          String   @id @default(uuid())
+  userId      String
+  collegeId   String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  college     College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, collegeId])
+  @@index([userId])
+  @@index([collegeId])
+}
+
+model Comparison {
+  id          String           @id @default(uuid())
+  userId      String
+  title       String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items       ComparisonItem[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([userId])
+}
+
+model ComparisonItem {
+  id            String      @id @default(uuid())
+  comparisonId  String
+  collegeId     String
+  comparison    Comparison  @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  college       College     @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+
+  @@unique([comparisonId, collegeId])
+  @@index([comparisonId])
+  @@index([collegeId])
+}
