@@ -3,7 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 const predictColleges = asyncHandler(async (req, res) => {
-    const { exam, rank, category, limit } = req.query;
+    const { exam, rank, category, limit } = req.validated.query;
 
     const cutoffs = await prisma.admissionCutoff.findMany({
         where: {

@@ -15,7 +15,7 @@ const getColleges = asyncHandler(async (req, res) => {
         maxFees,
         sortBy,
         sortOrder,
-    } = req.query;
+    } = req.validated.query;
 
     if (minFees !== undefined && maxFees !== undefined && minFees > maxFees) {
         throw new ApiError(400, "Minimum fees cannot be greater than maximum fees");
@@ -101,7 +101,7 @@ const getColleges = asyncHandler(async (req, res) => {
 });
 
 const getCollegeById = asyncHandler(async (req, res) => {
-    const { collegeId } = req.params;
+    const { collegeId } = req.validated.params;
 
     const college = await prisma.college.findUnique({
         where: {
@@ -141,7 +141,7 @@ const getCollegeById = asyncHandler(async (req, res) => {
 });
 
 const compareColleges = asyncHandler(async (req, res) => {
-    const { collegeIds } = req.query;
+    const { collegeIds } = req.validated.query;
 
     const colleges = await prisma.college.findMany({
         where: {

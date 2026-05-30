@@ -13,7 +13,10 @@ const validate = (schema, source = "body") => {
             throw new ApiError(400, "Validation failed", errors);
         }
 
-        req[source] = result.data;
+        req.validated = {
+            ...(req.validated || {}),
+            [source]: result.data,
+        };
         next();
     };
 };
